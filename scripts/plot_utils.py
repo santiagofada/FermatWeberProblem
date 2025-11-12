@@ -89,12 +89,11 @@ def plot_f_and_points(
     *,
     path: Optional[Array] = None,
     layout: str = "1x2",          # "1x2" o "2x1"
-    suptitle: str = "Evolución del método de Newton–Armijo",
+    method_title: str = "Método", # <--- nuevo: título genérico del método
     title_f: str = "f vs iteraciones",
     title_points: str = "Configuración en R²",
     figsize: Tuple[float, float] = (10, 4.5),
     save_path: Optional[str | Path] = None,
-
 ) -> plt.Figure:
     """
     Figura con dos subplots: f(k) y nodos,x* si A es R².
@@ -121,7 +120,7 @@ def plot_f_and_points(
         ax_pts.text(0.5, 0.5, "Visualización solo para R²",
                     ha="center", va="center", fontsize=11)
 
-    fig.suptitle(suptitle, fontsize=13, weight="bold")
+    fig.suptitle(f"Evolución — {method_title}", fontsize=13, weight="bold")
     fig.tight_layout()
     fig.subplots_adjust(top=0.88)
 

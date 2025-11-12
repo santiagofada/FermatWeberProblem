@@ -1,57 +1,8 @@
 from __future__ import annotations
 import numpy as np
-
-Array = np.ndarray
-
-
-def f(x: Array, A: Array, w: Array, norm: int | float = 2) -> float:
-    """
-    f(x) = Σ w_i ||x - a_i||_p
-    (Por defecto usa la norma Euclídea p=2)
-    """
-    total = 0.0
-    for i in range(A.shape[0]):
-        total += w[i] * np.linalg.norm(x - A[i], ord=norm)
-    return float(total)
+from .core import Array, f, grad, hess, init_from_nodes, node_optimal_condition
 
 
-
-def grad(x: Array, A: Array, w: Array, norm: int | float = 2, eps: float = 1e-10) -> Array:
-    """
-    Gradiente aproximado: ∇f(x) = Σ w_i (x - a_i)/||x - a_i||_p
-    (fórmula exacta solo válida para p=2, pero el código generaliza a otras normas si se ajusta el denominador)
-    """
-    n = x.size
-    grad_vector = np.zeros(n)
-    for i in range(A.shape[0]):
-        diff = x - A[i]
-        r = np.linalg.norm(diff, ord=norm)
-        if r < eps:
-            raise ValueError(f"La función no es diferenciable en x = a_{i}, x conincide con un nodo a")
-        grad_vector += (w[i] * diff) / r
-    return grad_vector
-
-
-def hess(x: Array, A: Array, w: Array, norm: int | float = 2, eps: float = 1e-10) -> Array:
-    """
-    ∇²f(x) = Σ w_i [I/||x - a_i|| - (x - a_i)(x - a_i)^T / ||x - a_i||³]
-    (válida solo para la norma Euclídea, pero mantiene compatibilidad de interfaz con otras normas)
-    """
-    n = x.size
-    H = np.zeros((n, n))
-
-    for i in range(A.shape[0]):
-        diff = x - A[i]
-        r = np.linalg.norm(diff, ord=norm)
-        if r < eps:
-            raise ValueError(f"La función no es diferenciable en x = a_{i}, x conincide con un nodo a")
-        u = diff / r
-        H += w[i] * (np.eye(n) / r - np.outer(u, u) / r)
-
-    return H
-
-
-# ---------- Inicialización del paper ----------
 def f_at_nodes(A: Array, w: Array, norm: int | float = 2) -> Array:
     """
     Calcula el vector [f(a_1), ..., f(a_m)], donde
@@ -64,7 +15,6 @@ def f_at_nodes(A: Array, w: Array, norm: int | float = 2) -> Array:
         f_values[i] = f(A[i], A, w, norm=norm)
     return f_values
 
-    return f_values
 
 def node_optimal_condition(p: int, A: Array, w: Array, eps: float = 1e-12) -> bool:
     """
