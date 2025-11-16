@@ -64,6 +64,7 @@ This repository includes:
 - `src/fermat_weber/newton.py`: Newton with Armijo implementation (`newton_armijo`).
 - `scripts/plot_utils.py`: Plotting utilities for `f` history and 2D configuration.
 - `notebooks/`: Analysis notebooks (`cualitative_analysis.ipynb`, `tests.ipynb`).
+- `documments/`: Documents fot the course (`2025_OPTI_report.pdf` for the proyect investigation, `2025_OPTI_Presentation.pdf` with the slides).
 
 ## Requirements
 - Python 3.9+
